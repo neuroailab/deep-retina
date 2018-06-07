@@ -63,10 +63,11 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
 
         # get whitenoise STA for cutout stimulus
         if cutout_width is not None:
-            assert len(cells) == 1, "cutout must be used with single cells"
-            wn = _loadexpt_h5(expt, 'whitenoise')
-            sta = np.array(wn[f'train/stas/cell{cells[0]+1:02d}']).copy()
-            py, px = ft.filterpeak(sta)[1]
+            #assert len(cells) == 1, "cutout must be used with single cells"
+            #wn = _loadexpt_h5(expt, 'whitenoise')
+            #sta = np.array(wn[f'train/stas/cell{cells[0]+1:02d}']).copy()
+            #py, px = ft.filterpeak(sta)[1]
+            print('uh-oh: check this out')
 
         # load the hdf5 file
         with _loadexpt_h5(expt, filename) as f:
@@ -111,8 +112,8 @@ def stimcut(data, expt, ci, width=11):
 
     # get the white noise STA for this cell
     wn = _loadexpt_h5(expt, 'whitenoise')
-    sta = np.array(wn[f'train/stas/cell{ci+1:02d}']).copy()
-
+    #sta = np.array(wn[f'train/stas/cell{ci+1:02d}']).copy()
+    sta = []
     # find the peak of the sta
     xc, yc = ft.filterpeak(sta)[1]
 

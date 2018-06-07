@@ -24,7 +24,7 @@ def notify(title):
     >>>    time.sleep(0.5)
     >>> Loading... Done.
     """
-    print(title + '... ', end='')
+    print(title + '... ')
     sys.stdout.flush()
     try:
         yield
