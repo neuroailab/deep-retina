@@ -30,7 +30,7 @@ Exptdata = namedtuple('Exptdata', ['X', 'y', 'spkhist'])
 __all__ = ['loadexpt', 'stimcut', 'CELLS']
 
 
-def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=None):
+def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=None, rolling_window=True):
     """Loads an experiment from an h5 file on disk
 
     Parameters
@@ -83,9 +83,12 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
             num_blocks = NUM_BLOCKS[expt] if train_or_test == 'train' and nskip > 0 else 1
             valid_indices = np.arange(expt_length).reshape(num_blocks, -1)[:, nskip:].ravel()
 
-            # reshape into the Toeplitz matrix (nsamples, history, *stim_dims)
-            stim_reshaped = rolling_window(stim[valid_indices], history, time_axis=0)
-
+            if rolling_window:
+                # reshape into the Toeplitz matrix (nsamples, history, *stim_dims)
+                stim_reshaped = rolling_window(stim[valid_indices], history, time_axis=0)
+            else:
+                stim_reshaped = stim[valid_indices]
+  
             # get the response for this cell (nsamples, ncells)
             resp = np.array(f[train_or_test]['response/firing_rate_10ms'][cells]).T[valid_indices]
             resp = resp[history:]
