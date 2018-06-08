@@ -89,12 +89,12 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
                 # reshape into the Toeplitz matrix (nsamples, history, *stim_dims)
                 stim_reshaped = rolling_window(stim[valid_indices], history, time_axis=0)
             else:
-                stim_orig = stim[valid_indices]
-                stim_reshaped = stim_orig[history:]
+                stim_reshaped = stim[valid_indices]
   
             # get the response for this cell (nsamples, ncells)
             resp = np.array(f[train_or_test]['response/firing_rate_10ms'][cells]).T[valid_indices]
-            resp = resp[history:]
+            if use_rolling_window:
+                resp = resp[history:]
 
             # get the spike history counts for this cell (nsamples, ncells)
             binned = np.array(f[train_or_test]['response/binned'][cells]).T[valid_indices]
