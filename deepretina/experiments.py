@@ -30,7 +30,7 @@ Exptdata = namedtuple('Exptdata', ['X', 'y', 'spkhist'])
 __all__ = ['loadexpt', 'stimcut', 'CELLS']
 
 
-def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=None, use_rolling_window=True):
+def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=None, use_rolling_window=True, return_binned=False):
     """Loads an experiment from an h5 file on disk
 
     Parameters
@@ -100,7 +100,10 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
             binned = np.array(f[train_or_test]['response/binned'][cells]).T[valid_indices]
             spk_hist = rolling_window(binned, history, time_axis=0)
 
-    return Exptdata(stim_reshaped, resp, spk_hist)
+    if return_binned:
+        return stim_reshaped, binned
+    else:
+        return Exptdata(stim_reshaped, resp, spk_hist)
 
 
 def _loadexpt_h5(expt, filename):
