@@ -101,7 +101,8 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
             spk_hist = rolling_window(binned, history, time_axis=0)
 
     if return_binned:
-        return stim_reshaped, binned
+        time_np = np.array(f[train_or_test]['time']).astype('float32')
+        return stim_reshaped, binned, time_np[valid_indices]
     else:
         return Exptdata(stim_reshaped, resp, spk_hist)
 
