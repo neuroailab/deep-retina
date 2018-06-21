@@ -73,7 +73,7 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
         with _loadexpt_h5(expt, filename) as f:
 
             expt_length = f[train_or_test]['time'].size
-
+            time_np = np.array(f[train_or_test]['time']).astype('float32')
             # load the stimulus into memory as a numpy array, and z-score it
             if cutout_width is None:
                 stim = zscore(np.array(f[train_or_test]['stimulus']).astype('float32'))
@@ -101,7 +101,6 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
             spk_hist = rolling_window(binned, history, time_axis=0)
 
     if return_binned:
-        time_np = np.array(f[train_or_test]['time']).astype('float32')
         return stim_reshaped, binned, time_np[valid_indices]
     else:
         return Exptdata(stim_reshaped, resp, spk_hist)
