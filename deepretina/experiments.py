@@ -97,11 +97,17 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
                 resp = resp[history:]
 
             # get the spike history counts for this cell (nsamples, ncells)
-            binned = np.array(f[train_or_test]['response/binned'][cells]).T[valid_indices]
-            spk_hist = rolling_window(binned, history, time_axis=0)
+            if '15-11-21' not in expt:
+                binned = np.array(f[train_or_test]['response/binned'][cells]).T[valid_indices]
+                spk_hist = rolling_window(binned, history, time_axis=0)
+            else:
+                spk_hist = None # binned entry not in h5 file
 
     if return_binned:
-        return stim_reshaped, binned, time_np[valid_indices]
+        if '15-11-21' not in expt:
+            return stim_reshaped, binned, time_np[valid_indices]
+        else:
+            return stim_reshaped, resp, time_np[valid_indices]
     else:
         return Exptdata(stim_reshaped, resp, spk_hist)
 
