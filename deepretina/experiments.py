@@ -30,7 +30,7 @@ Exptdata = namedtuple('Exptdata', ['X', 'y', 'spkhist'])
 __all__ = ['loadexpt', 'stimcut', 'CELLS']
 
 
-def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=None, use_rolling_window=True, return_binned=False):
+def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=None, use_rolling_window=True, return_binned=False, resp_cutoff=True):
     """Loads an experiment from an h5 file on disk
 
     Parameters
@@ -93,7 +93,7 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
   
             # get the response for this cell (nsamples, ncells)
             resp = np.array(f[train_or_test]['response/firing_rate_10ms'][cells]).T[valid_indices]
-            if use_rolling_window:
+            if use_rolling_window and resp_cutoff: # usually should cutoff response if using rolling window, but if you want to do other things to the response you may want to keep all of it
                 resp = resp[history:]
 
             # get the spike history counts for this cell (nsamples, ncells)
