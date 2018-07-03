@@ -115,7 +115,7 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
 def _loadexpt_h5(expt, filename):
     """Loads an h5py reference to an experiment on disk"""
 #    filepath = join(expanduser('~/experiments/data'), expt, filename + '.h5')
-    filepath = join('/mnt/fs1/datasets/deepretina_data/experiments/data', expt, filename + '.h5')
+    filepath = join('/mnt/fs1/deepretina_data/experiments/data', expt, filename + '.h5')
     return h5py.File(filepath, mode='r')
 
 
