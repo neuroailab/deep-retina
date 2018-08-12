@@ -66,7 +66,7 @@ def loadexpt(expt, cells, filename, train_or_test, history, nskip, cutout_width=
             assert len(cells) == 1, "cutout must be used with single cells"
             wn = _loadexpt_h5(expt, 'whitenoise')
 #            sta = np.array(wn[f'train/stas/cell{cells[0]+1:02d}']).copy()
-            sta = np.array(wn['train/stas/cell%02d'(cells[0]+1)]).copy()
+            sta = np.array(wn['train/stas/cell%02d' % (cells[0]+1)]).copy()
             py, px = ft.filterpeak(sta)[1]
 
         # load the hdf5 file
